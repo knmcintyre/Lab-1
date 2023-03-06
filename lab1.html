@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang='en'>
+  <head>
+    <meta charset='utf-8' />
+    <title>Points on a map</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1' />
+    <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v2.13.0/mapbox-gl.js'></script>
+    <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v2.13.0/mapbox-gl.css' rel='stylesheet' />
+    <style>
+      body { 
+        margin: 0; 
+        padding: 0; 
+      }
+      #map { 
+        position: absolute; 
+        top: 0; 
+        bottom: 0; 
+        width: 100%; 
+      }
+    </style>
+  </head>
+  <body>
+    <div id='map'></div>
+    <script>
+    // The value for 'accessToken' begins with 'pk...'
+    mapboxgl.accessToken = 'pk.eyJ1Ijoia21jaW50eXJlIiwiYSI6ImNsZW42aGVhcTA0ZHk0M3IxYnZ3dTI3NnQifQ.fc7azP61GdiiJbkhCKXHcw'; 
+    const map = new mapboxgl.Map({
+      container: 'map',
+      // style URL for basemap
+      style: 'mapbox://styles/kmcintyre/clet7dykt001101p1xl9d19gm', 
+      center: [-127.6476, 53.7267], //coordinates of BC... dont do it backward!!!!!!
+      zoom: 4.5 //appropriate zoom considering province size
+    });
+
+    // Code from the next step will go here.
+    //adding something that runs when the user clicks on the map element
+    map.on('click', (event) => {
+        //if user clicked on a marker, get some information
+        const features = map.queryRenderedFeatures(event.point,{
+            layers: ['data-driven-circles'] //layer name in square brackets in quotations!!
+        });
+        if (!features.length){
+            return;
+        }
+        const feature = features[0];
+        //next code here for pop ups
+        const popup = new mapboxgl.Popup({ offset: [0, -15]})
+        .setLngLat(feature.geometry.coordinates)
+        .setHTML(
+            '<h3>'+feature.properties.NAME.toString()+'</h3>' + //string concantenation 
+            `<p>${'Population:' feature.properties.POP_2000}</p>`
+        ).addTo(map);
+    });
+    </script>
+  </body>
+</html>
