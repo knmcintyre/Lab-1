@@ -48,7 +48,7 @@
         .setLngLat(feature.geometry.coordinates)
         .setHTML(
             '<h3>'+feature.properties.NAME.toString()+'</h3>' + //string concantenation 
-            `<p>${'Population:' feature.properties.POP_2000}</p>`
+            `<p>${feature.properties.POP_2000}</p>`
         ).addTo(map);
     });
     </script>
